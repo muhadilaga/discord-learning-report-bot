@@ -1,5 +1,10 @@
 # Discord Learning Report Bot
 
+![CI](https://github.com/muhadilaga/discord-learning-report-bot/actions/workflows/ci.yml/badge.svg)
+![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
+![Python](https://img.shields.io/badge/Python-3.10%2B-blue)
+![Status](https://img.shields.io/badge/status-active-success)
+
 Bot Discord berbasis Python untuk **otomatisasi laporan kegiatan pembelajaran** dengan format tetap, penyimpanan ke **Google Sheets**, rekap data, dan **export PDF**.
 
 Project ini cocok untuk komunitas belajar, mentor, kelas informal, kelompok bootcamp, atau tim edukasi yang ingin menghindari chat laporan manual di channel Discord.
@@ -129,9 +134,16 @@ Pertemuan berikutnya difokuskan pada latihan lanjutan dan pengenalan CSS dasar.
 
 ```text
 .
+├── .github/
+│   ├── ISSUE_TEMPLATE/
+│   └── workflows/
 ├── authorize_google.py
 ├── bot.py
+├── CHANGELOG.md
+├── CODE_OF_CONDUCT.md
+├── CONTRIBUTING.md
 ├── LICENSE
+├── PULL_REQUEST_TEMPLATE.md
 ├── README.md
 ├── requirements.txt
 └── .env.example
@@ -223,6 +235,15 @@ Workflow berada di:
 .github/workflows/ci.yml
 ```
 
+## Community Files
+Repository ini sekarang juga dilengkapi dengan:
+- `CONTRIBUTING.md`
+- `CODE_OF_CONDUCT.md`
+- `SECURITY.md`
+- issue templates
+- pull request template
+- `CHANGELOG.md`
+
 ## Security Notes
 - Jangan commit file `.env`
 - Jangan commit `google-token.json`
@@ -234,6 +255,17 @@ Workflow berada di:
 - Data autocomplete kelas diambil dari histori Google Sheets
 - Rekap dan export PDF membaca data dari Google Sheets, bukan dari message history Discord
 - Jika pengiriman ke Google Sheets gagal, laporan Discord tetap akan dikirim lebih dulu
+
+## Roadmap
+Beberapa pengembangan berikutnya yang mungkin berguna:
+- export CSV
+- dashboard web admin
+- integrasi notifikasi email
+- statistik kehadiran per kelas
+- template laporan berbeda untuk berbagai jenis pembelajaran
+
+## Contributing
+Silakan baca [CONTRIBUTING.md](CONTRIBUTING.md) sebelum membuat issue atau pull request.
 
 ## License
 Project ini menggunakan [MIT License](LICENSE).
