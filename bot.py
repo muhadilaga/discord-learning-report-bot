@@ -199,12 +199,26 @@ sheets_logger = GoogleSheetsLogger()
 
 
 def validate_tanggal(tanggal: str) -> str:
-    try:
-        parsed = datetime.strptime(tanggal, "%d-%m-%Y")
-    except ValueError as error:
-        raise ValueError(
-            "Format tanggal harus `dd-mm-yyyy`, contoh: `26-08-2026`."
-        ) from error
+    lower_tanggal = tanggal.lower().strip()
+    now = datetime.now()
+    
+    if lower_tanggal in ("hari ini", "today"):
+        parsed = now
+    elif lower_tanggal in ("kemarin", "yesterday", "h-1"):
+        parsed = now - timedelta(days=1)
+    elif lower_tanggal in ("besok", "tomorrow", "h+1"):
+        parsed = now + timedelta(days=1)
+    else:
+        normalized = lower_tanggal.replace("/", "-")
+        try:
+            parsed = datetime.strptime(normalized, "%d-%m-%Y")
+        except ValueError:
+            try:
+                parsed = datetime.strptime(normalized, "%d-%m-%y")
+            except ValueError as error:
+                raise ValueError(
+                    "Format tanggal harus `dd-mm-yyyy`, contoh: `26-08-2026`, atau gunakan `hari ini` / `kemarin`."
+                ) from error
 
     if parsed.year < 2020 or parsed.year > 2100:
         raise ValueError(
@@ -493,7 +507,7 @@ async def on_ready() -> None:
     description="Buat laporan kegiatan pembelajaran dengan format tetap",
 )
 @app_commands.describe(
-    tanggal="Tanggal pembelajaran, contoh: 26-08-2026",
+    tanggal="Tanggal pembelajaran (contoh: 26-08-2026, hari ini, kemarin)",
     kelas="Nama kelas atau kelompok",
     materi="Materi yang diajarkan",
     durasi="Durasi kegiatan, contoh: 90 menit",
@@ -536,8 +550,8 @@ async def lapor(
     description="Lihat rekap laporan mingguan berdasarkan rentang tanggal",
 )
 @app_commands.describe(
-    mulai="Tanggal mulai, format dd-mm-yyyy",
-    akhir="Tanggal akhir, format dd-mm-yyyy",
+    mulai="Tanggal mulai (contoh: 26-08-2026, hari ini, kemarin)",
+    akhir="Tanggal akhir (contoh: 26-08-2026, hari ini, kemarin)",
 )
 async def rekap_mingguan(
     interaction: discord.Interaction,
@@ -612,8 +626,8 @@ async def rekap_bulanan(
     description="Export laporan pada rentang tanggal menjadi PDF",
 )
 @app_commands.describe(
-    mulai="Tanggal mulai, format dd-mm-yyyy",
-    akhir="Tanggal akhir, format dd-mm-yyyy",
+    mulai="Tanggal mulai (contoh: 26-08-2026, hari ini, kemarin)",
+    akhir="Tanggal akhir (contoh: 26-08-2026, hari ini, kemarin)",
     judul="Judul PDF opsional",
 )
 async def export_pdf(
